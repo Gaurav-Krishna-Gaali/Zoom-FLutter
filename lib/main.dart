@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:zoom_flutter/resources/auth_methods.dart';
+import 'package:zoom_flutter/screens/home_screen.dart';
 import 'package:zoom_flutter/screens/login_screen.dart';
 import 'package:zoom_flutter/util/colors.dart';
-
-void main() {
+import 'package:firebase_core/firebase_core.dart'
+;
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -18,8 +23,21 @@ class MyApp extends StatelessWidget {
        scaffoldBackgroundColor:backgroundColor ,
       ),
       routes:{
-        '/login':(context)=>LoginScreen(),},
-      home: LoginScreen(),
+        '/login':(context)=>LoginScreen(),
+        '/home':(context)=> const HomeScreen(),
+        }, 
+      home: StreamBuilder(
+        stream: AuthMethods().authChanges,
+        builder: (context,snapshot){
+          if(snapshot.connectionState == ConnectionState.waiting){
+            return const Center(child: CircularProgressIndicator());
+          }
+          if (snapshot.hasData) {
+            return const HomeScreen();
+          }
+          return LoginScreen();
+        },
+      ),
     );
   }
 }
