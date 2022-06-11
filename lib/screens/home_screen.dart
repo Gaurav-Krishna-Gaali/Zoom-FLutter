@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:zoom_flutter/screens/history_meeting_screen.dart';
 import 'package:zoom_flutter/screens/meeting_screen.dart';
 import 'package:zoom_flutter/util/colors.dart';
+import 'package:zoom_flutter/widgets/custom_button.dart';
 import 'package:zoom_flutter/widgets/home_meeting_button.dart';
+
+import '../resources/auth_methods.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -12,6 +15,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  // final AuthMethods _authMethods = AuthMethods();
   int _page = 0;
   onPageChanged(int page) {
     setState(() {
@@ -23,7 +27,8 @@ class _HomeScreenState extends State<HomeScreen> {
      MeetingsScreen(),
     const HistoryMeetingScreen(),
     const Text('Contacts'),
-    const Text('Settings'),
+    const Text('Settings'), 
+    CustomButton(text: 'Log Out', onPressed: () => AuthMethods().signOut()),
 
   ];
   @override
@@ -73,3 +78,4 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
+
